@@ -1,0 +1,63 @@
+﻿@model Vereinsverwaltung.Models.Mitglieder
+
+<h2>Spieler bearbeiten</h2>
+<h4>@Model.Vorname @Model.Nachname</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <input type="hidden" asp-for="Mitglieder_Id" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Vorname" class="control-label">Vorname</label>
+                <input asp-for="Vorname" class="form-control" required />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Nachname" class="control-label">Nachname</label>
+                <input asp-for="Nachname" class="form-control" required />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Geburtsdatum" class="control-label">Geburtsdatum</label>
+                <input asp-for="Geburtsdatum" type="date" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Status" class="control-label">Status</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="Aktiv">Aktiv</option>
+                    <option value="Passiv">Passiv</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="MannschaftsId" class="control-label">Mannschaft zuweisen</label>
+                <select asp-for="MannschaftsId" class="form-control">
+                    <option value="0">-- Keine Mannschaft / Passiv --</option>
+                    @if (ViewBag.Mannschaften != null)
+                    {
+                        foreach (var mannschaft in (List<Vereinsverwaltung.Models.Mannschaften>)ViewBag.Mannschaften)
+                        {
+                            if (mannschaft.MannschaftsId == Model.MannschaftsId)
+                            {
+                                <option value="@mannschaft.MannschaftsId" selected>@mannschaft.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@mannschaft.MannschaftsId">@mannschaft.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Änderungen speichern</button>
+            <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+        </form>
+    </div>
+</div>

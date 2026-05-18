@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Vereinsverwaltung.Models.Mitglieder>
+
+<h2>Kader - Germania Hauenhorst</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Neuen Spieler eintragen</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>Geburtsdatum</th>
+            <th>Status</th>
+            <th>Aktionen</th> </tr>
+    </thead>
+    <tbody>
+        @foreach (var spieler in Model)
+        {
+            <tr>
+                <td>@spieler.Vorname</td>
+                <td>@spieler.Nachname</td>
+                <td>@spieler.Geburtsdatum?.ToString("dd.MM.yyyy")</td> 
+                <td>@spieler.Status</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@spieler.Mitglieder_Id" class="btn btn-sm btn-warning">Bearbeiten</a>
+                    <a asp-action="Delete" asp-route-id="@spieler.Mitglieder_Id" class="btn btn-sm btn-danger">Löschen</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<h2>Kader - Germania Hauenhorst</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>Geburtsdatum</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var spieler in Model)
+        {
+            <tr>
+                <td>@spieler.Vorname</td>
+                <td>@spieler.Nachname</td>
+                <td>@spieler.Geburtsdatum?.ToString("dd.MM.yyyy")</td>
+                <td>@spieler.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

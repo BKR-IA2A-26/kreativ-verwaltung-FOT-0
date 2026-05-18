@@ -5,7 +5,7 @@ namespace Vereinsverwaltung.Models;
 
 public partial class Mitglieder
 {
-    public int MitgliederId { get; set; }
+    public int Mitglieder_Id { get; set; }
 
     public string Vorname { get; set; } = null!;
 
@@ -23,7 +23,9 @@ public partial class Mitglieder
 
     public int? MannschaftsId { get; set; }
 
-    public virtual Mannschaften? Mannschafts { get; set; }
+    public virtual Mannschaften? Mannschaft { get; set; }
 
     public virtual ICollection<Mitgliedsbeitraege> Mitgliedsbeitraeges { get; set; } = new List<Mitgliedsbeitraege>();
+
+
 }

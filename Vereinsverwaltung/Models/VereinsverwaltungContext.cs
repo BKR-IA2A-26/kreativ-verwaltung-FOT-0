@@ -16,17 +16,17 @@ public partial class VereinsverwaltungContext : DbContext
     {
     }
 
-    public virtual DbSet<Mannschaften> Mannschaftens { get; set; }
+    public virtual DbSet<Mannschaften> Mannschaften { get; set; }
 
-    public virtual DbSet<Mitglieder> Mitglieders { get; set; }
+    public virtual DbSet<Mitglieder> Mitglieder { get; set; }
 
-    public virtual DbSet<Mitgliedsbeitraege> Mitgliedsbeitraeges { get; set; }
+    public virtual DbSet<Mitgliedsbeitraege> Mitgliedsbeitraege { get; set; }
 
-    public virtual DbSet<Plaetze> Plaetzes { get; set; }
+    public virtual DbSet<Plaetze> Plaetze { get; set; }
 
-    public virtual DbSet<Spiele> Spieles { get; set; }
+    public virtual DbSet<Spiele> Spiele { get; set; }
 
-    public virtual DbSet<Trainer> Trainers { get; set; }
+    public virtual DbSet<Trainer> Trainer { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -53,13 +53,13 @@ public partial class VereinsverwaltungContext : DbContext
 
         modelBuilder.Entity<Mitglieder>(entity =>
         {
-            entity.HasKey(e => e.MitgliederId).HasName("PRIMARY");
+            entity.HasKey(e => e.Mitglieder_Id).HasName("PRIMARY");
 
             entity.ToTable("mitglieder");
 
             entity.HasIndex(e => e.MannschaftsId, "Mannschafts_ID");
 
-            entity.Property(e => e.MitgliederId).HasColumnName("Mitglieder_ID");
+            entity.Property(e => e.Mitglieder_Id).HasColumnName("Mitglieder_ID");
             entity.Property(e => e.Adresse).HasMaxLength(255);
             entity.Property(e => e.EMail)
                 .HasMaxLength(100)
@@ -69,7 +69,7 @@ public partial class VereinsverwaltungContext : DbContext
             entity.Property(e => e.Status).HasMaxLength(20);
             entity.Property(e => e.Vorname).HasMaxLength(50);
 
-            entity.HasOne(d => d.Mannschafts).WithMany(p => p.Mitglieders)
+            entity.HasOne(d => d.Mannschaft).WithMany(p => p.Mitglieders)
                 .HasForeignKey(d => d.MannschaftsId)
                 .HasConstraintName("mitglieder_ibfk_1");
         });

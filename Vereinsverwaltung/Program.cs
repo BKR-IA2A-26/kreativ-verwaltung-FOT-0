@@ -1,4 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using Vereinsverwaltung.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// 1. Connection String aus der appsettings.json laden
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// 2. Den Datenbank-Context im System anmelden
+builder.Services.AddDbContext<VereinsverwaltungContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
