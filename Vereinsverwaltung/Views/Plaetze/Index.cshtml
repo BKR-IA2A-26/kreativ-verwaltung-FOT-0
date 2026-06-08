@@ -1,0 +1,122 @@
+﻿@model IEnumerable<Vereinsverwaltung.Models.Plaetze>
+@{
+    var heutigeTrainingsGesamt = ViewBag.HeutigeTrainings as List<Vereinsverwaltung.Models.Trainingszeiten> ?? new List<Vereinsverwaltung.Models.Trainingszeiten>();
+    string wochentag = ViewBag.AktuellerWochentag ?? "Heute";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2><i class="bi bi-shield-shaded text-success me-2"></i>Anlagen- & Live-Belegung</h2>
+        <p class="text-muted m-0">Live-Status für heute (<strong class="text-dark">@wochentag</strong>) bei Germania Hauenhorst.</p>
+    </div>
+</div>
+
+<div class="row mt-4">
+    @if (!Model.Any())
+    {
+        <div class="col-12">
+            <div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-2"></i>Keine Sportstätten angelegt.</div>
+        </div>
+    }
+    else
+    {
+        foreach (var platz in Model)
+        {
+            // 1. Prüfen, ob HEUTE Spiele anstehen
+            var heutigeSpiele = platz.Spiele.Where(s => s.Datum == DateOnly.FromDateTime(DateTime.Today)).ToList();
+            bool istBesetztDurchSpiel = heutigeSpiele.Any();
+
+            // 2. Prüfen, ob am HEUTIGEN Wochentag Trainings anstehen
+            var heutigeTrainingsFuerPlatz = heutigeTrainingsGesamt.Where(t => t.PlatzId == platz.PlatzId).ToList();
+            bool istBesetztDurchTraining = heutigeTrainingsFuerPlatz.Any();
+
+            // 3. Prüfen, ob eine Wettersperre vorliegt
+            bool istWetterGesperrt = platz.Status?.Contains("gesperrt", StringComparison.OrdinalIgnoreCase) ?? false;
+
+            // 4. Dynamische Farb- und Text-Logik (Priorisierung)
+            string cardBorder = "border-success";
+            string statusBadgeColor = "bg-success text-white";
+            string statusText = "Frei / Bespielbar";
+
+            if (istWetterGesperrt)
+            {
+                cardBorder = "border-danger";
+                statusBadgeColor = "bg-danger text-white";
+                statusText = platz.Status; // z.B. "Wetterbedingt gesperrt"
+            }
+            else if (istBesetztDurchSpiel)
+            {
+                cardBorder = "border-warning";
+                statusBadgeColor = "bg-warning text-dark";
+                statusText = "Besetzt (Spielbetrieb)";
+            }
+            else if (istBesetztDurchTraining)
+            {
+                cardBorder = "border-info";
+                statusBadgeColor = "bg-info text-dark";
+                statusText = "Besetzt (Training)";
+            }
+
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 border-top border-4 @cardBorder d-flex flex-column shadow-sm" style="padding: 20px;">
+
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <h4 class="m-0 fw-bold text-dark">@platz.Name</h4>
+                        <a asp-action="Edit" asp-route-id="@platz.PlatzId" class="btn btn-sm btn-outline-secondary py-0 px-2" title="Status ändern">
+                            <i class="bi bi-gear-fill"></i>
+                        </a>
+                    </div>
+
+                    <p class="text-muted small mb-3">
+                        <i class="bi bi-layers-half me-1"></i>@platz.Typ
+                    </p>
+
+                    <div class="mb-3">
+                        @if (istWetterGesperrt)
+                        {
+                            <div class="alert alert-danger py-1 px-2 small m-0">
+                                <i class="bi bi-x-octagon-fill me-1"></i> Platzanlage behördlich oder durch Platzwart gesperrt.
+                            </div>
+                        }
+                        else if (istBesetztDurchSpiel)
+                        {
+                            <div class="alert alert-warning py-1 px-2 small m-0">
+                                <i class="bi bi-trophy-fill me-1"></i> <strong>Matchday:</strong>
+                                @foreach (var spiel in heutigeSpiele)
+                                {
+                                    <br />
+                    
+                                    <small>• @spiel.Uhrzeit?.ToString("HH:mm") Uhr: vs. @spiel.Gegner</small>
+                                }
+                            </div>
+                        }
+                        else if (istBesetztDurchTraining)
+                        {
+                            <div class="alert alert-info py-1 px-2 small m-0 text-dark">
+                                <i class="bi bi-clock-history me-1"></i> <strong>Trainingsbetrieb heute:</strong>
+                                @foreach (var train in heutigeTrainingsFuerPlatz.OrderBy(t => t.Startzeit))
+                                {
+                                    <br />
+                    
+                                    <small>• @train.Startzeit.ToString("HH:mm") - @train.Endzeit.ToString("HH:mm") Uhr: @train.Mannschafts?.Name</small>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-success py-1 px-2 small m-0">
+                                <i class="bi bi-check-circle-fill me-1"></i> Platz ist aktuell frei nutzbar.
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mt-auto pt-2 text-end">
+                        <span class="badge @statusBadgeColor px-3 py-2 fw-bold shadow-sm fs-6">
+                            @statusText
+                        </span>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,49 @@
+﻿@model Vereinsverwaltung.Models.Trainingszeiten
+
+<h2>Neue Trainingszeit zuweisen</h2>
+<p class="text-muted">Hier legst du eine sich wöchentlich wiederholende Trainingszeit fest.</p>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Wochentag" class="control-label fw-bold mb-1">Wochentag</label>
+                <select asp-for="Wochentag" class="form-control" asp-items="ViewBag.Wochentage" required>
+                    <option value="">-- Tag auswählen --</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label asp-for="Startzeit" class="control-label fw-bold mb-1">Beginn</label>
+                    <input asp-for="Startzeit" type="time" class="form-control" required />
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                    <label asp-for="Endzeit" class="control-label fw-bold mb-1">Ende</label>
+                    <input asp-for="Endzeit" type="time" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MannschaftId" class="control-label fw-bold mb-1">Mannschaft</label>
+                <select asp-for="MannschaftId" class="form-control" asp-items="ViewBag.Mannschaften" required>
+                    <option value="">-- Welches Team trainiert? --</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="PlatzId" class="control-label fw-bold mb-1">Ressource / Sportplatz</label>
+                <select asp-for="PlatzId" class="form-control" asp-items="ViewBag.Plaetze" required>
+                    <option value="">-- Welcher Platz wird belegt? --</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success">Trainingszeit festlegen</button>
+            <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+        </form>
+    </div>
+</div>

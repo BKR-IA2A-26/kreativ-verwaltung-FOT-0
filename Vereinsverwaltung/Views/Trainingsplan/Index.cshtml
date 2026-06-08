@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Vereinsverwaltung.Models.Trainingszeiten>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2><i class="bi bi-clock-history text-success me-2"></i>Wöchentlicher Trainingsplan</h2>
+        <p class="text-muted m-0">Feste Trainingszeiten der Mannschaften von Germania Hauenhorst.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-2"></i>Zeiten eintragen
+    </a>
+</div>
+
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover align-middle bg-white m-0">
+        <thead class="table-dark">
+            <tr>
+                <th>Wochentag</th>
+                <th>Zeitraum</th>
+                <th>Mannschaft</th>
+                <th>Zugeordneter Platz</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">
+                        <i class="bi bi-info-circle me-2"></i>Noch keine regulären Trainingszeiten eingetragen.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                // Sortierung nach Wochentag-Logik (Montag bis Sonntag)
+                var wochentageReihenfolge = new List<string> { "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag" };
+                var sortierterPlan = Model.OrderBy(t => wochentageReihenfolge.IndexOf(t.Wochentag));
+
+                foreach (var training in sortierterPlan)
+                {
+                    <tr>
+                        <td class="fw-bold text-success">
+                            <i class="bi bi-calendar-check me-2"></i>@training.Wochentag
+                        </td>
+                        <td>
+                            <span class="badge bg-light text-dark border fs-6">
+                                @training.Startzeit.ToString("HH:mm") - @training.Endzeit.ToString("HH:mm") Uhr
+                            </span>
+                        </td>
+                        <td>
+                            <strong class="text-dark">@(training.Mannschafts?.Name ?? "Unbekanntes Team")</strong>
+                        </td>
+                        <td>
+                            <span class="text-secondary">
+                                <i class="bi bi-geo-alt me-1 text-danger"></i>@(training.Platz?.Name ?? "Kein Platz zugewiesen")
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

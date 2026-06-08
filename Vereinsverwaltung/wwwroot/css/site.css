@@ -1,31 +1,156 @@
-html {
-  font-size: 14px;
-}
+/* --- GLOBALE ERWEITERUNGEN FÜR SV GERMANIA HAUENHORST --- */
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+:root {
+    --germania-red: #d31219; /* Das markante Rot aus dem Vereinslogo */
+    --germania-dark: #141414; /* Edles, tiefes Schwarz für die Navbar */
+    --germania-light: #f8f9fa; /* Heller Hintergrund für maximalen Kontrast */
+    --germania-gray: #e9ecef;
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: var(--germania-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #212529;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* --- NAVBAR STYLING --- */
+.bg-germania-navbar {
+    background-color: var(--germania-dark) !important;
+    border-bottom: 3px solid var(--germania-red) !important;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.navbar-brand-custom {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #ffffff !important;
+}
+
+    .navbar-brand-custom span {
+        color: var(--germania-red);
+    }
+
+.nav-link-custom {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    padding: 0.5rem 1rem !important;
+    border-radius: 4px;
+}
+
+    .nav-link-custom:hover {
+        color: #ffffff !important;
+        background-color: rgba(211, 18, 25, 0.15); /* Dezenter roter Schimmer beim Hover */
+    }
+
+    .nav-link-custom.active-link {
+        color: #ffffff !important;
+        background-color: var(--germania-red) !important;
+    }
+
+/* --- BUTTONS STYLING --- */
+.btn-primary {
+    background-color: var(--germania-red) !important;
+    border-color: var(--germania-red) !important;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #b00e14 !important;
+        border-color: #b00e14 !important;
+        transform: translateY(-1px);
+    }
+
+.btn-outline-primary {
+    color: var(--germania-red) !important;
+    border-color: var(--germania-red) !important;
+}
+
+    .btn-outline-primary:hover {
+        background-color: var(--germania-red) !important;
+        color: #ffffff !important;
+    }
+
+/* --- CARDS & COCKPIT-ELEMENTE --- */
+.card {
+    border: none !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* Standardmäßig verpassen wir Karten einen dezenten roten Top-Border */
+    .card.border-top-germania {
+        border-top: 4px solid var(--germania-red) !important;
+    }
+
+/* --- TABLES STYLING --- */
+.table {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+    .table thead {
+        background-color: var(--germania-dark) !important;
+        color: #ffffff !important;
+    }
+
+    .table th {
+        font-weight: 600;
+        border-bottom: 2px solid var(--germania-red) !important;
+    }
+
+
+/* Zusätzliche Helfer für das Dashboard-Branding */
+.bg-germania-red {
+    background-color: var(--germania-red) !important;
+}
+
+.border-left-germania {
+    border-left: 5px solid var(--germania-red) !important;
+}
+
+.text-germania-red {
+    color: var(--germania-red) !important;
+}
+
+
+/* --- BOX-MODEL & FLEX-LAYOUT FIX --- */
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Zwingt den Body, mindestens die Bildschirmhöhe zu nutzen */
+    background-color: var(--germania-light) !important;
+    margin-bottom: 0 !important; /* Löscht den störenden Standard-Abstand */
+}
+
+/* Der Hauptinhalt bekommt den gesamten verfügbaren Platz und drückt den Footer nach unten */
+main {
+    flex: 1 0 auto;
+}
+
+/* --- FOOTER BEFREIEN --- */
+.footer {
+    flex-shrink: 0;
+    position: relative !important; /* Befreit den Footer aus der starren Fixierung */
+    bottom: auto !important;
+    width: 100%;
+    background-color: #ffffff !important;
+    border-top: 1px solid var(--germania-gray) !important;
+    padding: 1.5rem 0 !important;
+    margin-top: 3rem !important; /* Sorgt für einen sauberen Abstand nach den Kacheln */
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.03) !important;
 }

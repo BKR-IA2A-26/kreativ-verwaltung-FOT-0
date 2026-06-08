@@ -1,8 +1,105 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
+    var naechstesSpiel = ViewBag.NaechstesSpiel as Vereinsverwaltung.Models.Spiele;
+    var gesperrtePlaetze = ViewBag.GesperrtePlaetze as List<Vereinsverwaltung.Models.Plaetze>;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="mb-4 mt-2">
+    <h1 class="display-6 fw-bold text-dark">Willkommen im Vereins-Cockpit</h1>
+    <p class="text-muted m-0">Zentrale Live-Übersicht des SV Germania Hauenhorst 1930 e.V.</p>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card bg-germania-red text-white shadow-sm h-100 border-0">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+                <div>
+                    <h6 class="text-uppercase mb-1 small opacity-75 fw-bold">Mitglieder Gesamt</h6>
+                    <h1 class="m-0 display-5 fw-bold">@ViewBag.MitgliederAnzahl</h1>
+                </div>
+                <i class="bi bi-people-fill display-4 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-dark text-white shadow-sm h-100 border-0">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+                <div>
+                    <h6 class="text-uppercase mb-1 small opacity-75 fw-bold">Aktive Teams</h6>
+                    <h1 class="m-0 display-5 fw-bold" style="color: var(--germania-red);">@ViewBag.MannschaftenAnzahl</h1>
+                </div>
+                <i class="bi bi-shield-shaded display-4 opacity-50 text-white"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100 border-0 border-left-germania bg-white">
+            <div class="card-header bg-white border-0 fw-bold text-uppercase small text-muted pt-3 pb-0">
+                <i class="bi bi-calendar-event text-germania-red me-2"></i>Nächstes anstehendes Spiel
+            </div>
+            <div class="card-body d-flex flex-column justify-content-center py-4">
+                @if (naechstesSpiel != null)
+                {
+                    <div class="text-center">
+                        <span class="badge bg-dark mb-2 px-3 py-1.5 fs-7">@naechstesSpiel.Mannschafts?.Name</span>
+                        <h3 class="fw-bold text-dark my-2">Heimteam <span class="text-muted fw-normal">vs.</span> @naechstesSpiel.Gegner</h3>
+                        <p class="text-muted m-0 fw-semibold">
+                            <i class="bi bi-clock me-1 text-germania-red"></i> @naechstesSpiel.Datum?.ToString("dd.MM.yyyy") um @naechstesSpiel.Uhrzeit?.ToString("HH:mm") Uhr
+                        </p>
+                        <p class="small text-secondary mt-2 mb-0">
+                            <i class="bi bi-geo-alt-fill text-danger me-1"></i> Austragungsort: @(naechstesSpiel.Platz?.Name ?? "Auswärtsspiel")
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center text-muted py-3">
+                        <i class="bi bi-emoji-smile display-6 d-block mb-2 text-secondary"></i>
+                        Keine anstehenden Spiele eingetragen.
+                    </div>
+                }
+            </div>
+            <div class="card-footer bg-white border-0 text-center pb-3 pt-0">
+                <a asp-controller="Spiele" asp-action="Index" class="btn btn-sm btn-outline-primary px-3">Zum kompletten Spielplan</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100 border-0 bg-white">
+            <div class="card-header bg-white border-0 fw-bold text-uppercase small text-muted pt-3 pb-0">
+                <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Anlagen-Warnmeldungen
+            </div>
+            <div class="card-body d-flex flex-column justify-content-center py-3">
+                @if (gesperrtePlaetze != null && gesperrtePlaetze.Any())
+                {
+                    <div class="list-group list-group-flush w-100">
+                        @foreach (var platz in gesperrtePlaetze)
+                        {
+                            <div class="list-group-item px-0 py-2 d-flex align-items-center justify-content-between border-0 border-bottom">
+                                <div>
+                                    <strong class="text-dark d-block">@platz.Name</strong>
+                                    <span class="text-muted small">@platz.Typ</span>
+                                </div>
+                                <span class="badge bg-danger px-2 py-1.5">@platz.Status</span>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-3">
+                        <i class="bi bi-check-circle-fill display-5 d-block mb-2" style="color: #198754;"></i>
+                        <span class="text-success fw-semibold">Alle Sportplätze sind freigegeben und bespielbar!</span>
+                    </div>
+                }
+            </div>
+            <div class="card-footer bg-white border-0 text-center pb-3 pt-0">
+                <a asp-controller="Plaetze" asp-action="Index" class="btn btn-sm btn-outline-secondary px-3">Zur Platzbelegung</a>
+            </div>
+        </div>
+    </div>
 </div>

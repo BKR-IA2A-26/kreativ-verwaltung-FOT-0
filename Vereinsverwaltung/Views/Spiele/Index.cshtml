@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Vereinsverwaltung.Models.Spiele>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-calendar-event text-success me-2"></i>Spielplan & Ergebnisse</h2>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-2"></i>Spiel hinzufügen
+    </a>
+</div>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Datum / Zeit</th>
+                <th>Team</th>
+                <th class="text-center">Begegnung</th>
+                <th>Spielort / Platz</th>
+                <th class="text-center">Ergebnis</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                        <i class="bi bi-info-circle me-2"></i>Keine Spiele im System eingetragen.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var spiel in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">
+                            @spiel.Datum?.ToString("dd.MM.yyyy")<br />
+                            <small class="text-muted">@spiel.Uhrzeit?.ToString("HH:mm") Uhr</small>
+                        </td>
+                        <td>
+                            <span class="badge bg-dark">@(spiel.Mannschafts?.Name ?? "Unbekannt")</span>
+                        </td>
+                        <td class="text-center fs-5">
+                            @if (spiel.HeimAuswaerts == "Heim")
+                            {
+                                <span><strong>Germania Hauenhorst</strong> <span class="text-muted fs-6">vs.</span> @spiel.Gegner</span>
+                            }
+                            else
+                            {
+                                <span>@spiel.Gegner <span class="text-muted fs-6">vs.</span> <strong>Germania Hauenhorst</strong></span>
+                            }
+                        </td>
+                        <td>
+                            <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                            @if (!string.IsNullOrEmpty(spiel.Spielort))
+                            {
+                                @spiel.Spielort
+                            }
+                            else
+                            {
+                                @(spiel.Platz?.Name ?? "Kein Platz zugewiesen")
+                            }
+                        </td>
+                        <td class="text-center fw-bold text-success fs-5">
+                            @(string.IsNullOrEmpty(spiel.Ergebnis) ? "- : -" : spiel.Ergebnis)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

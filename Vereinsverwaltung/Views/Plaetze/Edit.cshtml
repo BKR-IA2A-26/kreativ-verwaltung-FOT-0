@@ -1,0 +1,29 @@
+﻿@model Vereinsverwaltung.Models.Plaetze
+
+<h2>Platz-Status verwalten: @Model.Name</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="PlatzId" />
+            <input type="hidden" asp-for="Name" />
+            <input type="hidden" asp-for="Adresse" />
+            <input type="hidden" asp-for="Typ" />
+
+            <div class="form-group mb-4">
+                <label asp-for="Status" class="control-label fw-bold mb-2">Aktueller Anlagen-Zustand (Wetter/Wartung)</label>
+                <select asp-for="Status" class="form-control" required>
+                    <option value="Freigegeben">🟢 Freigegeben (Bespielbar)</option>
+                    <option value="Wetterbedingt gesperrt">🔴 Wetterbedingt gesperrt (Starkregen/Schnee)</option>
+                    <option value="Wegen Wartung gesperrt">🟤 Instandhaltung / Gesperrt (Rasenpflege)</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Status aktualisieren</button>
+            <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+        </form>
+    </div>
+</div>

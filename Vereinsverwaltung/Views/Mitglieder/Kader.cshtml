@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Vereinsverwaltung.Models.Mitglieder>
+
+<h2>Kaderübersicht</h2>
+<p>Wähle eine Mannschaft aus, um den aktuellen Kader anzuzeigen.</p>
+
+<div class="card mb-4">
+    <form asp-action="Kader" method="get" class="row align-items-end">
+        <div class="col-md-6">
+            <label class="control-label font-weight-bold">Mannschaft auswählen:</label>
+            <select name="mannschaftId" class="form-control" onchange="this.form.submit()">
+                <option value="">-- Bitte Mannschaft wählen --</option>
+                @if (ViewBag.Mannschaften != null)
+                {
+                    foreach (var team in ViewBag.Mannschaften)
+                    {
+                        <option value="@team.MannschaftsId">@team.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </form>
+</div>
+
+@if (ViewBag.AktuelleMannschaft != null)
+{
+    <h3>Kader: @ViewBag.AktuelleMannschaft</h3>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Für diese Mannschaft wurden noch keine Spieler eingetragen.</div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var spieler in Model)
+                {
+                    <tr>
+                        <td>@spieler.Vorname</td>
+                        <td>@spieler.Nachname</td>
+                        <td>
+                            <span class="badge @(spieler.Status == "Aktiv" ? "bg-success" : "bg-secondary")">
+                                @spieler.Status
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

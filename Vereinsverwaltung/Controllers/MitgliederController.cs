@@ -16,17 +16,42 @@ namespace Vereinsverwaltung.Controllers
         }
 
         // ==========================================
-        // 1. READ (Anzeige der Liste)
+        // 1. READ (Anzeige der Liste mit Such- & Filteroption)
         // ==========================================
-        public IActionResult Index()
+        public IActionResult Index(string searchString, int? mannschaftId, string status)
         {
-            // .Include lädt die Mannschaft direkt mit, damit wir in der Tabelle
-            // statt der "4" z.B. "A2-Junioren (U18)" anzeigen können.
-            var spielerListe = _context.Mitglieder
-                                       .Include(m => m.Mannschaft)
-                                       .ToList();
+            // 1. Mannschaften für das Filter-Dropdown laden
+            ViewBag.Mannschaften = _context.Mannschaften?.ToList() ?? new List<Mannschaften>();
 
-            return View(spielerListe);
+            // Aktuelle Filterwerte in der ViewBag speichern, damit die Filterfelder ausgefüllt bleiben
+            ViewBag.CurrentSearch = searchString;
+            ViewBag.CurrentMannschaft = mannschaftId;
+            ViewBag.CurrentStatus = status;
+
+            // 2. Basis-Abfrage erstellen (wichtig: .Include für das Team)
+            var spielerQuery = _context.Mitglieder.Include(m => m.Mannschaft).AsQueryable();
+
+            // 3. Filter: Namenssuche (Vorname oder Nachname)
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                spielerQuery = spielerQuery.Where(m => m.Vorname.Contains(searchString) ||
+                                                      m.Nachname.Contains(searchString));
+            }
+
+            // 4. Filter: Mannschafts-Zuweisung
+            if (mannschaftId.HasValue && mannschaftId.Value > 0)
+            {
+                spielerQuery = spielerQuery.Where(m => m.MannschaftsId == mannschaftId);
+            }
+
+            // 5. Filter: Aktiv / Passiv Status
+            if (!string.IsNullOrEmpty(status))
+            {
+                spielerQuery = spielerQuery.Where(m => m.Status == status);
+            }
+
+            // Am Ende die gefilterte Liste an die View übergeben
+            return View(spielerQuery.ToList());
         }
 
         // ==========================================
@@ -165,6 +190,27 @@ namespace Vereinsverwaltung.Controllers
                 _context.SaveChanges();
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Mitglieder/Kader
+        public IActionResult Kader(int? mannschaftId)
+        {
+            // 1. Alle Mannschaften für das Auswahl-Dropdown laden
+            ViewBag.Mannschaften = _context.Mannschaften.ToList();
+
+            // 2. Wenn eine Mannschaft ausgewählt wurde, filtere die Spieler
+            if (mannschaftId.HasValue && mannschaftId.Value > 0)
+            {
+                var kader = _context.Mitglieder
+                                    .Where(m => m.MannschaftsId == mannschaftId)
+                                    .ToList();
+
+                ViewBag.AktuelleMannschaft = _context.Mannschaften.Find(mannschaftId)?.Name;
+                return View(kader);
+            }
+
+            // Wenn noch kein Team gewählt wurde, zeigen wir eine leere Liste
+            return View(new List<Mitglieder>());
         }
     }
 }

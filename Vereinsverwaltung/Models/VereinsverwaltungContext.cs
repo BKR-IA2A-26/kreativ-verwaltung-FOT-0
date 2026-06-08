@@ -28,6 +28,8 @@ public partial class VereinsverwaltungContext : DbContext
 
     public virtual DbSet<Trainer> Trainer { get; set; }
 
+    public virtual DbSet<Trainingszeiten> Trainingszeiten { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySql("server=localhost;port=3306;user=root;database=vereinsverwaltung", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.4.3-mysql"));
@@ -104,6 +106,7 @@ public partial class VereinsverwaltungContext : DbContext
             entity.Property(e => e.Adresse).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Typ).HasMaxLength(50);
+            entity.Property(e => e.Status).HasMaxLength(50).HasDefaultValue("Freigegeben");
         });
 
         modelBuilder.Entity<Spiele>(entity =>
@@ -132,7 +135,7 @@ public partial class VereinsverwaltungContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("spiele_ibfk_1");
 
-            entity.HasOne(d => d.Platz).WithMany(p => p.Spieles)
+            entity.HasOne(d => d.Platz).WithMany(p => p.Spiele)
                 .HasForeignKey(d => d.PlatzId)
                 .HasConstraintName("spiele_ibfk_2");
         });
@@ -170,6 +173,14 @@ public partial class VereinsverwaltungContext : DbContext
                         j.IndexerProperty<int>("TrainerId").HasColumnName("Trainer_ID");
                         j.IndexerProperty<int>("MannschaftsId").HasColumnName("Mannschafts_ID");
                     });
+        });
+
+        modelBuilder.Entity<Trainingszeiten>(entity =>
+        {
+            entity.HasKey(e => e.TrainingId).HasName("PRIMARY");
+            entity.ToTable("trainingszeiten");
+            entity.HasOne(d => d.Mannschafts).WithMany().HasForeignKey(d => d.MannschaftId);
+            entity.HasOne(d => d.Platz).WithMany().HasForeignKey(d => d.PlatzId);
         });
 
         OnModelCreatingPartial(modelBuilder);

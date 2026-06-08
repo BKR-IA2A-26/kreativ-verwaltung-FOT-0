@@ -1,0 +1,67 @@
+﻿@model Vereinsverwaltung.Models.Spiele
+
+<h2>Neues Spiel eintragen</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MannschaftsId" class="control-label fw-bold">Eigene Mannschaft (Intern)</label>
+                <select asp-for="MannschaftsId" class="form-control" required>
+                    <option value="">-- Bitte Team wählen --</option>
+                    @foreach (var team in ViewBag.Mannschaften)
+                    {
+                        <option value="@team.MannschaftsId">@team.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label asp-for="Gegner" class="control-label fw-bold">Gegnerischer Verein</label>
+                    <input asp-for="Gegner" class="form-control" placeholder="z.B. SuS Neuenkirchen" required />
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                    <label asp-for="HeimAuswaerts" class="control-label fw-bold">Spielart</label>
+                    <select asp-for="HeimAuswaerts" class="form-control" required>
+                        <option value="Heim">Heimspiel</option>
+                        <option value="Auswärts">Auswärtsspiel</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label asp-for="Datum" class="control-label fw-bold">Spieldatum</label>
+                    <input asp-for="Datum" type="date" class="form-control" required />
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                    <label asp-for="Uhrzeit" class="control-label fw-bold">Anstoßzeit</label>
+                    <input asp-for="Uhrzeit" type="time" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="PlatzId" class="control-label fw-bold">Heimplatz zuweisen (Nur bei Heimspielen nötig)</label>
+                <select asp-for="PlatzId" class="form-control">
+                    <option value="0">-- Kein interner Platz (oder Auswärts) --</option>
+                    @foreach (var platz in ViewBag.Plaetze)
+                    {
+                        <option value="@platz.PlatzId">@platz.Name (@platz.Typ)</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Spielort" class="control-label fw-bold">Alternativer Spielort (Bei Auswärtsspielen)</label>
+                <input asp-for="Spielort" class="form-control" placeholder="z.B. Sportplatz Rheine" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Spiel fest terminieren</button>
+            <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+        </form>
+    </div>
+</div>
