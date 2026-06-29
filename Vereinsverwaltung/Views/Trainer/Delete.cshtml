@@ -1,0 +1,32 @@
+﻿@model Vereinsverwaltung.Models.Trainer
+
+<div class="container max-width-600 mt-4">
+    <div class="card border-danger shadow-sm p-4">
+        <div class="text-center text-danger mb-3">
+            <i class="bi bi-exclamation-triangle display-3"></i>
+        </div>
+        <h3 class="text-center mb-3">Trainer wirklich löschen?</h3>
+        <p class="text-center text-muted mb-4">
+            Bist du sicher, dass du den Trainer <strong>@Model.Vorname @Model.Nachname</strong> unwiderruflich aus dem System entfernen möchtest?
+        </p>
+
+        <div class="card bg-light p-3 mb-4 border-0">
+            <div class="row small text-uppercase fw-bold text-muted mb-1">
+                <div class="col-6">Lizenzstufe</div>
+                <div class="col-6">Telefonnummer</div>
+            </div>
+            <div class="row">
+                <div class="col-6 fw-semibold">@(string.IsNullOrEmpty(Model.Lizenzstufe) ? "-" : Model.Lizenzstufe)</div>
+                <div class="col-6 fw-semibold">@(string.IsNullOrEmpty(Model.Telefonnummer) ? "-" : Model.Telefonnummer)</div>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" class="d-flex justify-content-center gap-2">
+            <input type="hidden" asp-for="TrainerId" />
+            <button type="submit" class="btn btn-danger px-4">
+                <i class="bi bi-trash me-1"></i> Ja, endgültig löschen
+            </button>
+            <a asp-action="Index" class="btn btn-secondary px-4">Abbrechen</a>
+        </form>
+    </div>
+</div>

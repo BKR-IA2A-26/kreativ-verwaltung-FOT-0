@@ -66,6 +66,8 @@
                 <th>Geburtsdatum</th>
                 <th>Status</th>
                 <th>Mannschaft</th>
+                <th>Beitragsklasse</th>
+                <th>Beitrag</th>
                 <th class="text-end">Aktionen</th>
             </tr>
         </thead>
@@ -73,7 +75,7 @@
             @if (!Model.Any())
             {
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-4">
+                    <td colspan="8" class="text-center text-muted py-4">
                         <i class="bi bi-exclamation-circle me-2"></i>Keine Spieler mit diesen Filtereinstellungen gefunden.
                     </td>
                 </tr>
@@ -94,6 +96,22 @@
                         <td>
                             @(item.Mannschaft != null ? item.Mannschaft.Name : "Keine Mannschaft / Passiv")
                         </td>
+
+                        <td>
+                            @(string.IsNullOrEmpty(item.Beitragsklasse) ? "-" : item.Beitragsklasse)
+                        </td>
+
+                        <td>
+                            @if (item.HatBezahlt)
+                            {
+                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Bezahlt</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger"><i class="bi bi-exclamation-circle me-1"></i> Offen</span>
+                            }
+                        </td>
+
                         <td class="text-end">
                             <a asp-action="Edit" asp-route-id="@item.Mitglieder_Id" class="btn btn-sm btn-outline-primary me-1">
                                 <i class="bi bi-pencil-square"></i> Bearbeiten

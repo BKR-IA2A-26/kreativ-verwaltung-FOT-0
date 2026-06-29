@@ -1,9 +1,8 @@
-/* --- GLOBALE ERWEITERUNGEN FÜR SV GERMANIA HAUENHORST --- */
 
 :root {
-    --germania-red: #d31219; /* Das markante Rot aus dem Vereinslogo */
-    --germania-dark: #141414; /* Edles, tiefes Schwarz für die Navbar */
-    --germania-light: #f8f9fa; /* Heller Hintergrund für maximalen Kontrast */
+    --germania-red: #d31219; 
+    --germania-dark: #141414; 
+    --germania-light: #f8f9fa; 
     --germania-gray: #e9ecef;
 }
 
@@ -13,7 +12,7 @@ body {
     color: #212529;
 }
 
-/* --- NAVBAR STYLING --- */
+
 .bg-germania-navbar {
     background-color: var(--germania-dark) !important;
     border-bottom: 3px solid var(--germania-red) !important;
@@ -41,7 +40,7 @@ body {
 
     .nav-link-custom:hover {
         color: #ffffff !important;
-        background-color: rgba(211, 18, 25, 0.15); /* Dezenter roter Schimmer beim Hover */
+        background-color: rgba(211, 18, 25, 0.15); 
     }
 
     .nav-link-custom.active-link {
@@ -49,7 +48,7 @@ body {
         background-color: var(--germania-red) !important;
     }
 
-/* --- BUTTONS STYLING --- */
+
 .btn-primary {
     background-color: var(--germania-red) !important;
     border-color: var(--germania-red) !important;
@@ -73,7 +72,6 @@ body {
         color: #ffffff !important;
     }
 
-/* --- CARDS & COCKPIT-ELEMENTE --- */
 .card {
     border: none !important;
     border-radius: 10px !important;
@@ -86,12 +84,12 @@ body {
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
     }
 
-    /* Standardmäßig verpassen wir Karten einen dezenten roten Top-Border */
+
     .card.border-top-germania {
         border-top: 4px solid var(--germania-red) !important;
     }
 
-/* --- TABLES STYLING --- */
+
 .table {
     background-color: #ffffff;
     border-radius: 8px;
@@ -123,7 +121,6 @@ body {
 }
 
 
-/* --- BOX-MODEL & FLEX-LAYOUT FIX --- */
 html {
     height: 100%;
     box-sizing: border-box;
@@ -132,25 +129,25 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Zwingt den Body, mindestens die Bildschirmhöhe zu nutzen */
+    min-height: 100vh; 
     background-color: var(--germania-light) !important;
-    margin-bottom: 0 !important; /* Löscht den störenden Standard-Abstand */
+    margin-bottom: 0 !important; 
 }
 
-/* Der Hauptinhalt bekommt den gesamten verfügbaren Platz und drückt den Footer nach unten */
+
 main {
     flex: 1 0 auto;
 }
 
-/* --- FOOTER BEFREIEN --- */
+
 .footer {
     flex-shrink: 0;
-    position: relative !important; /* Befreit den Footer aus der starren Fixierung */
+    position: relative !important; 
     bottom: auto !important;
     width: 100%;
     background-color: #ffffff !important;
     border-top: 1px solid var(--germania-gray) !important;
     padding: 1.5rem 0 !important;
-    margin-top: 3rem !important; /* Sorgt für einen sauberen Abstand nach den Kacheln */
+    margin-top: 3rem !important; 
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.03) !important;
 }

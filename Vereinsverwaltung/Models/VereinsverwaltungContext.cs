@@ -51,6 +51,10 @@ public partial class VereinsverwaltungContext : DbContext
             entity.Property(e => e.Liga).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Saison).HasMaxLength(20);
+            entity.HasOne(m => m.Trainer)
+             .WithMany() 
+             .HasForeignKey(m => m.Trainer_ID)
+             .HasPrincipalKey(t => t.TrainerId); /
         });
 
         modelBuilder.Entity<Mitglieder>(entity =>

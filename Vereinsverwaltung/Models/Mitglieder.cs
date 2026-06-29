@@ -25,6 +25,9 @@ public partial class Mitglieder
 
     public virtual Mannschaften? Mannschaft { get; set; }
 
+    public string? Beitragsklasse { get; set; }
+    public bool HatBezahlt { get; set; }
+
     public virtual ICollection<Mitgliedsbeitraege> Mitgliedsbeitraeges { get; set; } = new List<Mitgliedsbeitraege>();
 
 

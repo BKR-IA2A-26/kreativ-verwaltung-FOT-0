@@ -14,10 +14,10 @@ namespace Vereinsverwaltung.Controllers
             _context = context;
         }
 
-        // GET: Spiele
+       
         public IActionResult Index()
         {
-            // Nutzt deine exakten Navigationseigenschaften "Mannschafts" und "Platz"
+
             var spiele = _context.Spiele
                                  .Include(s => s.Mannschafts)
                                  .Include(s => s.Platz)
@@ -27,7 +27,7 @@ namespace Vereinsverwaltung.Controllers
             return View(spiele);
         }
 
-        // GET: Spiele/Create
+        
         public IActionResult Create()
         {
             ViewBag.Mannschaften = _context.Mannschaften?.ToList() ?? new List<Mannschaften>();
@@ -35,12 +35,12 @@ namespace Vereinsverwaltung.Controllers
             return View();
         }
 
-        // POST: Spiele/Create
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Spiele spiel)
         {
-            // Verhindert Validierungsfehler durch die virtuellen DB-Objekte
+           
             ModelState.Remove("Mannschafts");
             ModelState.Remove("Platz");
 

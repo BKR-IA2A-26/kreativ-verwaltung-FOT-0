@@ -31,7 +31,7 @@
             }
             else
             {
-                // Sortierung nach Wochentag-Logik (Montag bis Sonntag)
+                // Sortierung nach Wochentag Logik 
                 var wochentageReihenfolge = new List<string> { "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag" };
                 var sortierterPlan = Model.OrderBy(t => wochentageReihenfolge.IndexOf(t.Wochentag));
 

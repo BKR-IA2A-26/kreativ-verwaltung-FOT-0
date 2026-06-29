@@ -17,11 +17,11 @@ namespace Vereinsverwaltung.Controllers
 
         public IActionResult Index()
         {
-            // 1. Statistiken abfragen
+            
             ViewBag.MitgliederAnzahl = _context.Mitglieder.Count();
             ViewBag.MannschaftenAnzahl = _context.Mannschaften.Count();
 
-            // 2. Das allernächste Spiel finden (heute oder in der Zukunft)
+            
             var heute = DateOnly.FromDateTime(DateTime.Today);
             ViewBag.NaechstesSpiel = _context.Spiele
                 .Include(s => s.Mannschafts)
@@ -31,10 +31,40 @@ namespace Vereinsverwaltung.Controllers
                 .ThenBy(s => s.Uhrzeit)
                 .FirstOrDefault();
 
-            // 3. Aktuell gesperrte Plätze finden
+            //  Aktuell gesperrte Plätze anzeigen
             ViewBag.GesperrtePlaetze = _context.Plaetze
                 .Where(p => p.Status != "Freigegeben")
                 .ToList();
+
+
+            //  Mitglieder aus der Datenbank holen
+            var alleMitglieder = _context.Mitglieder.ToList();
+
+            int gesamt = alleMitglieder.Count;
+            int bezahlt = alleMitglieder.Count(m => m.HatBezahlt);
+
+            
+            double prozentBezahlt = gesamt > 0 ? Math.Round((double)bezahlt / gesamt * 100) : 0;
+
+
+            ViewBag.MitgliederAnzahl = gesamt;
+            ViewBag.BezahltProzent = prozentBezahlt;
+            ViewBag.OffeneBeitraege = gesamt - bezahlt;
+
+           
+            string ampelFarbe = "bg-danger"; 
+            if (prozentBezahlt >= 85)
+            {
+                ampelFarbe = "bg-success";
+            }
+            else if (prozentBezahlt >= 50)
+            {
+                ampelFarbe = "bg-warning text-dark"; 
+            }
+            ViewBag.AmpelFarbe = ampelFarbe;
+
+
+
 
             return View();
         }

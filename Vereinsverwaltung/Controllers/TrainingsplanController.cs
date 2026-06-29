@@ -15,18 +15,18 @@ namespace Vereinsverwaltung.Controllers
             _context = context;
         }
 
-        // GET: Trainingsplan
+       
         public IActionResult Index()
         {
             var plan = _context.Trainingszeiten
                 .Include(t => t.Mannschafts)
                 .Include(t => t.Platz)
-                .OrderBy(t => t.Wochentag) // Kann man später optimieren
+                .OrderBy(t => t.Wochentag) 
                 .ToList();
             return View(plan);
         }
 
-        // GET: Trainingsplan/Create
+        
         public IActionResult Create()
         {
             ViewBag.Mannschaften = new SelectList(_context.Mannschaften, "MannschaftsId", "Name");
@@ -35,7 +35,7 @@ namespace Vereinsverwaltung.Controllers
             return View();
         }
 
-        // POST: Trainingsplan/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Trainingszeiten training)

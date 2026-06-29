@@ -22,18 +22,18 @@
     {
         foreach (var platz in Model)
         {
-            // 1. Prüfen, ob HEUTE Spiele anstehen
+            //  Prüfen, ob HEUTE Spiele anstehen
             var heutigeSpiele = platz.Spiele.Where(s => s.Datum == DateOnly.FromDateTime(DateTime.Today)).ToList();
             bool istBesetztDurchSpiel = heutigeSpiele.Any();
 
-            // 2. Prüfen, ob am HEUTIGEN Wochentag Trainings anstehen
+            //  Prüfen, ob am HEUTIGEN Wochentag Trainings anstehen
             var heutigeTrainingsFuerPlatz = heutigeTrainingsGesamt.Where(t => t.PlatzId == platz.PlatzId).ToList();
             bool istBesetztDurchTraining = heutigeTrainingsFuerPlatz.Any();
 
-            // 3. Prüfen, ob eine Wettersperre vorliegt
+            //  Prüfen, ob eine Wettersperre vorliegt
             bool istWetterGesperrt = platz.Status?.Contains("gesperrt", StringComparison.OrdinalIgnoreCase) ?? false;
 
-            // 4. Dynamische Farb- und Text-Logik (Priorisierung)
+            //  Dynamische Farb- und Text-Logik (Priorisierung)
             string cardBorder = "border-success";
             string statusBadgeColor = "bg-success text-white";
             string statusText = "Frei / Bespielbar";
