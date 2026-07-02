@@ -57,5 +57,43 @@ namespace Vereinsverwaltung.Controllers
             ViewBag.Plaetze = _context.Plaetze?.ToList() ?? new List<Plaetze>();
             return View(spiel);
         }
+
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GeneriereErgebnisse()
+        {
+            
+            var heute = DateOnly.FromDateTime(DateTime.Today);
+
+           
+            var alteSpiele = await _context.Spiele
+                .Where(s => s.Datum < heute && (s.Ergebnis == null || s.Ergebnis == ""))
+                .ToListAsync();
+
+            if (alteSpiele.Any())
+            {
+                Random rnd = new Random();
+
+                foreach (var spiel in alteSpiele)
+                {
+                    
+                    int toreHeim = rnd.Next(0, 6);
+                    int toreGast = rnd.Next(0, 6);
+
+                   
+                    spiel.Ergebnis = $"{toreHeim}:{toreGast}";
+
+                    _context.Update(spiel);
+                }
+
+                
+                await _context.SaveChangesAsync();
+            }
+
+           
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

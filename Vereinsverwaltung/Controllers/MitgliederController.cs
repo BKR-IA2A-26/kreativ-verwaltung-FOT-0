@@ -178,5 +178,26 @@ namespace Vereinsverwaltung.Controllers
 
             return View(new List<Mitglieder>());
         }
+       
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleBezahltStatus(int id)
+        {
+           
+            var mitglied = await _context.Mitglieder.FindAsync(id);
+
+            if (mitglied != null)
+            {
+                // Kehrt den aktuellen Status um 
+                mitglied.HatBezahlt = !mitglied.HatBezahlt;
+
+                _context.Update(mitglied);
+                await _context.SaveChangesAsync();
+            }
+
+            
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

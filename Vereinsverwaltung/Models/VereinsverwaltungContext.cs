@@ -54,7 +54,7 @@ public partial class VereinsverwaltungContext : DbContext
             entity.HasOne(m => m.Trainer)
              .WithMany() 
              .HasForeignKey(m => m.Trainer_ID)
-             .HasPrincipalKey(t => t.TrainerId); /
+             .HasPrincipalKey(t => t.TrainerId); 
         });
 
         modelBuilder.Entity<Mitglieder>(entity =>
